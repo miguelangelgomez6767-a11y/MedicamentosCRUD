@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medicamentos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 16px; color: #222; }
+        h1 { margin-bottom: 8px; }
+        .actions { display: flex; gap: 12px; align-items: center; }
+        a, button { color: #075985; }
+        .button { display: inline-block; padding: 9px 13px; border-radius: 4px; background: #075985; color: white; text-decoration: none; }
+        table { width: 100%; margin-top: 24px; border-collapse: collapse; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #f3f4f6; }
+        form { display: inline; }
+        button { padding: 0; border: 0; background: none; font: inherit; text-decoration: underline; cursor: pointer; }
+        .empty { margin-top: 24px; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>Medicamentos</h1>
+    <p>Consulta, registra y administra el inventario de medicamentos.</p>
+    <a class="button" href="{% url 'medicamentos:crear' %}">Crear medicamento</a>
+
+    {# Muestra la tabla si hay registros; de lo contrario, informa que está vacía. #}
+    {% if medicamentos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medicamento in medicamentos %}
+                    <tr>
+                        <td>{{ medicamento.nombre }}</td>
+                        <td>{{ medicamento.cantidad }}</td>
+                        <td>${{ medicamento.precio|floatformat:2 }}</td>
+                        <td class="actions">
+                            {# Las acciones usan la clave primaria de cada medicamento. #}
+                            <a href="{% url 'medicamentos:editar' medicamento.pk %}">Modificar</a>
+                            <a href="{% url 'medicamentos:eliminar' medicamento.pk %}">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty">Todavía no hay medicamentos registrados.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if object %}Modificar{% else %}Crear{% endif %} medicamento</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; color: #222; }
+        label { display: block; margin-top: 16px; font-weight: bold; }
+        input { box-sizing: border-box; width: 100%; margin-top: 6px; padding: 9px; }
+        button { margin-top: 20px; padding: 10px 14px; border: 0; border-radius: 4px; background: #075985; color: white; cursor: pointer; }
+        .errors { color: #b91c1c; }
+    </style>
+</head>
+<body>
+    {# La misma plantilla sirve para crear y editar según exista el objeto. #}
+    <h1>{% if object %}Modificar{% else %}Crear{% endif %} medicamento</h1>
+    <form method="post">
+        {# El token protege el formulario POST contra solicitudes CSRF. #}
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="errors">{{ form.non_field_errors }}</div>{% endif %}
+        {# Django genera cada control y sus errores a partir de los campos del modelo. #}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="errors">{{ field.errors }}</div>{% endif %}
+        {% endfor %}
+        <button type="submit">Guardar</button>
+        <a href="{% url 'medicamentos:lista' %}">Cancelar</a>
+    </form>
+</body>
+</html>

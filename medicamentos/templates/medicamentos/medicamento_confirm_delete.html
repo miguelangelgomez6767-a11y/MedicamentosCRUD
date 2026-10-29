@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eliminar medicamento</title>
+</head>
+<body>
+    <h1>Eliminar medicamento</h1>
+    <p>¿Seguro que deseas eliminar "{{ object.nombre }}"?</p>
+    {# La eliminación solo ocurre al confirmar con POST; cancelar vuelve al listado. #}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+        <a href="{% url 'medicamentos:lista' %}">Cancelar</a>
+    </form>
+</body>
+</html>
